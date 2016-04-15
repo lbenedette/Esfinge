@@ -11,16 +11,18 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 # if login_required: redirect to login
 login_manager.login_view = 'login'
-conn = SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 
-# USER CLASS
-class User(conn.Model):
+class User(db.Model):
     __tablename__ = 'user'
 
-    email = conn.Column(conn.String(120), primary_key=True)
-    pass_hash = conn.Column(conn.String(15))
-    authenticated = conn.Column(conn.Boolean, default=False)
+    email = db.Column(db.String(50), primary_key=True)
+    pass_hash = db.Column(db.String(15))
+    username = db.Column(db.String(20))
+    authenticated = db.Column(db.Boolean, default=False)
+    questions = db.relationship('Question', backref='user', lazy='dynamic')
+    answers = db.relationship('Answer', backref='user', lazy='dynamic')
 
     def is_active(self):
         """True, as all users are active."""
@@ -37,6 +39,23 @@ class User(conn.Model):
     def is_anonymous(self):
         """False, as anonymous users aren't supported."""
         return False
+
+
+class Question(db.Model):
+    __tablename__ = 'question'
+
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.Text)
+    user_id = db.Column(db.String(50), db.ForeignKey('user.email'))
+    answers = db.relationship('Answer', backref='question', lazy='dynamic')
+
+class Answer(db.Model):
+    __tablename__ = 'answer'
+
+    id = db.Column(db.Integer, primary_key=True)
+    answer = db.Column(db.Text)
+    user_id = db.Column(db.String(50), db.ForeignKey('user.email'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
 
 
 # USER LOADER
@@ -59,9 +78,10 @@ def register():
         if user is None:
             password = request.form['password'].encode('utf-8')
             user = User(email=request.form['email'],
-                        pass_hash=bcrypt.hashpw(password, bcrypt.gensalt()))
-            conn.session.add(user)
-            conn.session.commit()
+                        pass_hash=bcrypt.hashpw(password, bcrypt.gensalt()),
+                        username=request.form['username'])
+            db.session.add(user)
+            db.session.commit()
             flash('You were successfully registered!')
             return redirect(url_for('login'))
         else:
@@ -78,11 +98,11 @@ def login():
             pass_byte = request.form['password'].encode('utf-8')
             if bcrypt.hashpw(pass_byte, user.pass_hash) == user.pass_hash:
                 user.authenticated = True
-                conn.session.add(user)
-                conn.session.commit()
+                db.session.add(user)
+                db.session.commit()
                 login_user(user, remember=True)
                 flash('Login realizado com sucesso!')
-                return redirect(url_for('home'))
+                return redirect(url_for('timeline'))
     return render_template('login.html', title='login')
 
 
@@ -91,17 +111,31 @@ def login():
 def logout():
     user = current_user
     user.authenticated = False
-    conn.session.add(user)
-    conn.session.commit()
+    db.session.add(user)
+    db.session.commit()
     logout_user()
     flash('Logout realizado com sucesso!')
     return render_template('login.html', title='login')
 
 
-@app.route('/home')
+@app.route('/timeline', methods=['GET', 'POST'])
 @login_required
-def home():
-    return render_template('home.html')
+def timeline():
+    if request.method == 'POST':
+        question = Question(id=None, question=request.form['question'], user_id=current_user.email)
+        db.session.add(question)
+        db.session.commit()
+        return render_template('timeline.html', user=current_user)
+    return render_template('timeline.html', user=current_user)
+
+
+@app.route('/timeline/<int:question_id>')
+@login_required
+def delete_question(question_id):
+    question = Question.query.get(question_id)
+    db.session.delete(question)
+    db.session.commit()
+    return redirect('timeline')
 
 
 if __name__ == '__main__':
