@@ -133,9 +133,33 @@ def timeline():
 @login_required
 def delete_question(question_id):
     question = Question.query.get(question_id)
+    print(question)
+    if question is None:
+        return redirect(url_for('timeline'))
     db.session.delete(question)
     db.session.commit()
-    return redirect('timeline')
+    return render_template('timeline.html', user=current_user)
+
+
+@app.route('/timeline/<username>')
+@login_required
+def user_timeline(username):
+    user = User.query.filter_by(username=username).first()
+    if user != current_user:
+        return render_template('user_timeline.html', user=user)
+    else:
+        return render_template('timeline.html', user=current_user)
+
+
+@app.route('/timeline/<username>/<int:question_id>', methods=['POST'])
+@login_required
+def add_answer(username, question_id):
+    user = User.query.filter_by(username=username).first()
+    print(user.username)
+    answer = Answer(id=None, answer=request.form['answer'], user_id=current_user.email, question_id=question_id)
+    db.session.add(answer)
+    db.session.commit()
+    return redirect(url_for('user_timeline', username=user.username))
 
 
 if __name__ == '__main__':

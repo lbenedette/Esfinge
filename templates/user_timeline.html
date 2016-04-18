@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <p>Page of {{ user.username }}</p>
+
+    {% for question in user.questions %}
+        <p>{{ question.question }}</p>
+        <form action="{{ url_for('add_answer', username=user.username, question_id=question.id) }}" method="post">
+            <textarea name="answer" id="" cols="50" rows="2"></textarea>
+            <input type="submit" value="Responder">
+        </form>
+        {% for answer in question.answers %}
+            <p>{{ answer.answer }}</p>
+        {% endfor %}
+    {% endfor %}
+
+{% endblock %}
