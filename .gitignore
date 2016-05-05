@@ -1,0 +1,5 @@
+Desktop.ini
+$RECYCLE.BIN/
+.idea/
+__pycache__/
+*.db
