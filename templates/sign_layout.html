@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+  <link href="{{ url_for('static', filename='css/form.css') }}" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" title="Esfinge Logo" width="128px" height="128px">
+        <div class="wrap">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

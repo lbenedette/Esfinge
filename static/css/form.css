@@ -1,0 +1,60 @@
+body {
+  background: url('../img/login-bg.jpg') fixed;
+  background-size: cover;
+  padding: 10%;
+  margin: 0;
+  text-align: center;
+}
+
+.wrap {
+  width: 280px;
+  background: rgba(255, 255, 255, .35);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  margin: 15px auto;
+  padding: 15px 25px 20px 25px;
+}
+
+p.form-title {
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+form.sign input[type="text"],
+form.sign input[type="email"],
+form.sign input[type="password"] {
+    width: 100%;
+    margin: 0;
+    padding: 5px 10px;
+    background: 0;
+    border: 0;
+    border-bottom: 1px solid #FFFFFF;
+    outline: 0;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    color: #FFFFFF;
+    outline: 0;
+}
+
+form.sign input[type="submit"] {
+    width: 100%;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-top: 16px;
+    outline: 0;
+    cursor: pointer;
+    letter-spacing: 1px;
+    background-color: #89489c;
+    border-color: #734680;
+}
+
+form.sign input[type="submit"]:hover {
+    background-color: #734680;
+    transition: background-color .5s ease;
+}
