@@ -19,7 +19,7 @@ p.form-title {
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-    color: #FFFFFF;
+    color: #333;
     text-transform: uppercase;
     letter-spacing: 4px;
 }
@@ -32,13 +32,13 @@ form.sign input[type="password"] {
     padding: 5px 10px;
     background: 0;
     border: 0;
-    border-bottom: 1px solid #FFFFFF;
+    border-bottom: 1px solid #333;
     outline: 0;
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 1px;
     margin-bottom: 5px;
-    color: #FFFFFF;
+    color: #555;
     outline: 0;
 }
 
@@ -57,4 +57,17 @@ form.sign input[type="submit"] {
 form.sign input[type="submit"]:hover {
     background-color: #734680;
     transition: background-color .5s ease;
+}
+
+p.signup-message {
+  margin: 15px 0 0 0;
+  font-size: 12px;
+}
+
+p.signup-message a {
+  color: #9b38b8;
+}
+
+p.signup-message a:hover {
+  color: #89489c;
 }
