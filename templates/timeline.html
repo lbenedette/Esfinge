@@ -1,15 +1,35 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <p>Hello, {{ user.username }}. <a href="{{ url_for('logout') }}">Click here</a> to logout!</p>
+  <div class="timeline-header">
+    <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture">
+    <div class="question-balloon"></div>
     <form action="{{ url_for('timeline') }}" method="post">
-        <textarea name="question" id="" cols="50" rows="2"></textarea>
-        <p><input type="submit" name="submit" value="Perguntar"></p>
+      <textarea name="question" class="question" placeholder="Pergunte qualquer coisa!"></textarea>
+      <p><input type="submit" name="submit" value="Perguntar" class="btn btn-default btn-sm"></p>
     </form>
-    {% for question in user.questions %}
-        <p>{{ question.question }} <a href="{{ url_for('delete_question', question_id=question.id) }}">Deletar</a></p>
-        {% for answer in question.answers %}
+    <div class="question-mark"></div>
+  </div>
+  <div class="timeline">
+    <div class="question-list">
+      {% for question in user.questions %}
+        <div class="question">
+          <div class="question-content">
+            {{ question.question }}
+          </div>
+          <div class="label label-danger">
+            <a href="{{ url_for('delete_question', question_id=question.id) }}">
+              x
+            </a>
+          </div>
+        </div>
+        <div class="answers">
+          {% for answer in question.answers %}
             <p>{{ answer.answer }}</p>
-        {% endfor %}
-    {% endfor %}
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="follow-list"></div>
+  </div>
 
 {% endblock %}

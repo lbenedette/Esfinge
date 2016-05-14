@@ -14,12 +14,22 @@ body {
   padding: 15px 25px 20px 25px;
 }
 
+a img:hover {
+  opacity: 1;
+  transition: opacity .5s ease;
+}
+
+a img:hover {
+  opacity: .8;
+  transition: opacity .5s ease;
+}
+
 p.form-title {
     font-family: sans-serif;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-    color: #FFFFFF;
+    color: #333;
     text-transform: uppercase;
     letter-spacing: 4px;
 }
@@ -32,13 +42,13 @@ form.sign input[type="password"] {
     padding: 5px 10px;
     background: 0;
     border: 0;
-    border-bottom: 1px solid #FFFFFF;
+    border-bottom: 1px solid #333;
     outline: 0;
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 1px;
     margin-bottom: 5px;
-    color: #FFFFFF;
+    color: #555;
     outline: 0;
 }
 
@@ -50,11 +60,32 @@ form.sign input[type="submit"] {
     outline: 0;
     cursor: pointer;
     letter-spacing: 1px;
-    background-color: #89489c;
-    border-color: #734680;
+    background-color: #73552a;
+    border-color: #73552a;
+    transition: background-color .5s ease;
 }
 
 form.sign input[type="submit"]:hover {
-    background-color: #734680;
+    background-color: #87683c;
     transition: background-color .5s ease;
+}
+
+p.signup-message {
+  margin: 15px 0 0 0;
+  font-size: 12px;
+}
+
+p.signup-message a {
+  color: #bd8953;
+  transition: color .3s ease;
+}
+
+p.signup-message a:hover {
+  color: #73552a;
+  transition: color .3s ease;
+}
+
+.wrap .alert {
+  padding: 5px;
+  margin-bottom: 10px;
 }

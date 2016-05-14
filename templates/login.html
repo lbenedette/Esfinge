@@ -1,9 +1,17 @@
 {% extends 'sign_layout.html' %}
 {% block content %}
-  <p class="form-title">Sign In</p>
+  <p class="form-title">Entrar</p>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-warning" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   <form class="sign" action="{{ url_for('login') }}" method="post">
-    <input type="email" name="email" placeholder="Email">
-    <input type="password" name="password" placeholder="Password">
-    <input type="submit" value="Sign In" class="btn btn-success btn-sm">
+    <input type="email" name="email" placeholder="E-mail">
+    <input type="password" name="password" placeholder="Senha">
+    <input type="submit" value="Entrar" class="btn btn-success btn-sm">
+    <p class="signup-message">Ainda não possui uma conta? Registre-se clicando <a href="{{ url_for('register') }}">aqui</a>.</p>
   </form>
 {% endblock %}
