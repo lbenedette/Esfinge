@@ -10,7 +10,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" title="Esfinge Logo" width="128px" height="128px">
+        <a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" width="128px" height="128px"></a>
         <div class="wrap">
           {% block content %}
           {% endblock %}
@@ -18,5 +18,7 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.12.3.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/esfinge.js') }}"></script>
 </body>
 </html>
