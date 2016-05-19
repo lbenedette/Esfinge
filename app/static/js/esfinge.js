@@ -13,7 +13,3 @@ $('.question-list > .question').click(function() {
     question.addClass('active');
   }
 });
-
-$('.confirmation').on('click', function() {
-  return confirm('Você deseja apagar esta pergunta?');
-});
