@@ -14,6 +14,7 @@ login_manager.init_app(app)
 #    user not logged
 # redirect to login
 login_manager.login_view = 'login'
+login_manager.login_message = 'Por favor entre para poder acessar a página!'
 
 
 @app.errorhandler(404)
