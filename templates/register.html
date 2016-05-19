@@ -1,11 +1,17 @@
 {% extends 'sign_layout.html' %}
 {% block content %}
   <p class="form-title">Nova Conta</p>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-warning" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   <form action="{{ url_for('register') }}" method="post" class="sign">
-    <input type="text" name="username" placeholder="Nome de Usuário" required>
+    <input type="text" name="name" placeholder="Nome de Usuário" required>
     <input type="email" name="email" placeholder="E-mail" required>
     <input type="password" name="password" placeholder="Senha" required>
-    <input type="password" name="password_confirmation" placeholder="Senha (confirmação)" required>
     <input type="submit" value="Criar Conta" class="btn btn-success btn-sm">
-</form>
+  </form>
 {% endblock %}

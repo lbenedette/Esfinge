@@ -18,8 +18,8 @@ class User(db.Model):
     __tablename__ = 'user'
 
     email = db.Column(db.String(50), primary_key=True)
-    pass_hash = db.Column(db.String(15))
-    username = db.Column(db.String(20))
+    encrypt_password = db.Column(db.String(15))
+    name = db.Column(db.String(20))
     authenticated = db.Column(db.Boolean, default=False)
     questions = db.relationship('Question', backref='user', lazy='dynamic')
     answers = db.relationship('Answer', backref='user', lazy='dynamic')
@@ -58,6 +58,29 @@ class Answer(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
 
 
+# support functions
+def database_add(data):
+    db.session.add(data)
+    db.session.commit()
+
+
+def database_delete(data):
+    db.session.delete(data)
+    db.session.commit()
+
+
+def logger(user):
+    user.authenticated = True
+    database_add(user)
+    login_user(user, remember=True)
+
+
+def des_logger(user):
+    user.authenticated = False
+    database_add(user)
+    logout_user()
+
+
 # USER LOADER
 @login_manager.user_loader
 def user_loader(user_id):
@@ -78,15 +101,13 @@ def register():
         if user is None:
             password = request.form['password'].encode('utf-8')
             user = User(email=request.form['email'],
-                        pass_hash=bcrypt.hashpw(password, bcrypt.gensalt()),
-                        username=request.form['username'])
-            db.session.add(user)
-            db.session.commit()
-            flash('You were successfully registered!')
+                        encrypt_password=bcrypt.hashpw(password, bcrypt.gensalt()),
+                        name=request.form['name'])
+            database_add(user)
+            flash('Você foi registrado com sucesso!')
             return redirect(url_for('login'))
         else:
-            flash('Email already registered!')
-            return render_template('register.html', title='register')
+            flash('Email já cadastrado!')
     return render_template('register.html', title='register')
 
 
@@ -95,25 +116,22 @@ def login():
     if request.method == 'POST':
         user = User.query.get(request.form['email'])
         if user:
-            pass_byte = request.form['password'].encode('utf-8')
-            if bcrypt.hashpw(pass_byte, user.pass_hash) == user.pass_hash:
-                user.authenticated = True
-                db.session.add(user)
-                db.session.commit()
-                login_user(user, remember=True)
+            password = request.form['password'].encode('utf-8')
+            if bcrypt.hashpw(password, user.encrypt_password) == user.encrypt_password:
+                logger(user)
                 flash('Login realizado com sucesso!')
                 return redirect(url_for('timeline'))
+            else:
+                flash('Senha incorreta!')
+        else:
+            flash('Email de usuário não cadastrado!')
     return render_template('login.html', title='login')
 
 
 @app.route('/logout')
 @login_required
 def logout():
-    user = current_user
-    user.authenticated = False
-    db.session.add(user)
-    db.session.commit()
-    logout_user()
+    des_logger(current_user)
     flash('Logout realizado com sucesso!')
     return render_template('login.html', title='login')
 
@@ -123,9 +141,7 @@ def logout():
 def timeline():
     if request.method == 'POST':
         question = Question(id=None, question=request.form['question'], user_id=current_user.email)
-        db.session.add(question)
-        db.session.commit()
-        return render_template('timeline.html', user=current_user)
+        database_add(question)
     return render_template('timeline.html', user=current_user)
 
 
@@ -133,33 +149,31 @@ def timeline():
 @login_required
 def delete_question(question_id):
     question = Question.query.get(question_id)
-    print(question)
     if question is None:
         return redirect(url_for('timeline'))
-    db.session.delete(question)
-    db.session.commit()
+    database_delete(question)
     return render_template('timeline.html', user=current_user)
 
 
-@app.route('/timeline/<username>')
+@app.route('/timeline/<name>')
 @login_required
-def user_timeline(username):
-    user = User.query.filter_by(username=username).first()
+def user_timeline(name):
+    user = User.query.filter_by(name=name).first()
     if user != current_user:
         return render_template('user_timeline.html', user=user)
     else:
         return render_template('timeline.html', user=current_user)
 
 
-@app.route('/timeline/<username>/<int:question_id>', methods=['POST'])
+@app.route('/timeline/<name>/<int:question_id>', methods=['POST'])
 @login_required
-def add_answer(username, question_id):
-    user = User.query.filter_by(username=username).first()
-    print(user.username)
+def add_answer(name, question_id):
+    user = User.query.filter_by(name=name).first()
+    print(user.name)
     answer = Answer(id=None, answer=request.form['answer'], user_id=current_user.email, question_id=question_id)
     db.session.add(answer)
     db.session.commit()
-    return redirect(url_for('user_timeline', username=user.username))
+    return redirect(url_for('user_timeline', name=user.name))
 
 
 if __name__ == '__main__':
