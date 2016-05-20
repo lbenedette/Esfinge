@@ -36,13 +36,17 @@ def register():
     if request.method == 'POST':
         user = User.query.get(request.form['email'])
         if user is None:
-            password = request.form['password'].encode('utf-8')
-            user = User(email=request.form['email'],
-                        encrypt_password=bcrypt.hashpw(password, bcrypt.gensalt()),
-                        name=request.form['name'])
-            database_add(user)
-            flash('Você foi registrado com sucesso!')
-            return redirect(url_for('login'))
+            password = request.form['password']
+            re_password = request.form['re-password']
+            if password == re_password:
+                user = User(email=request.form['email'],
+                            encrypt_password=bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()),
+                            name=request.form['name'])
+                database_add(user)
+                flash('Você foi registrado com sucesso!')
+                return redirect(url_for('login'))
+            else:
+                flash('As senhas são diferentes!')
         else:
             flash('Email já cadastrado!')
     return render_template('register.html', title='register')
@@ -102,7 +106,7 @@ def delete_question(question_id):
 def user_timeline(name):
     user = User.query.filter_by(name=name).first()
     if user != current_user:
-        return render_template('user_timeline.html', user=user)
+        return render_template('user_timeline.html', user=current_user, owner=user)
     else:
         return render_template('timeline.html', user=current_user)
 

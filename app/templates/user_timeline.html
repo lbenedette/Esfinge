@@ -1,8 +1,8 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <p>Page of {{ user.username }}</p>
+    <p>Page of {{ owner.name }}</p>
 
-    {% for question in user.questions %}
+    {% for question in owner.questions %}
         <p>{{ question.question }}</p>
         <form action="{{ url_for('add_answer', username=user.username, question_id=question.id) }}" method="post">
             <textarea name="answer" id="" cols="50" rows="2"></textarea>
