@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
     {% if request.endpoint == 'user_timeline' %}
-        <p>Page of {{ user_profile.username }}</p>
+        <p>Page of {{ user_profile.username }}
         {% if current_user.id == user_profile.id %}
             <!-- pass -->
         {% elif followed %}
@@ -9,6 +9,7 @@
         {% else %}
             <a href="{{ url_for('follow_user', profile_id=user_profile.id) }}">follow</a>
         {% endif %}
+        </p>
         {% for question in user_profile.questions %}
             <p>{{ question.question }}</p>
             <form action="{{ url_for('add_answer', profile_id=user_profile.id, question_id=question.id) }}" method="post">
