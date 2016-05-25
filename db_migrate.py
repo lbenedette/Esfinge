@@ -2,7 +2,7 @@ import types
 
 from migrate.versioning import api
 
-from Esfinge import db
+from app import db
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
 

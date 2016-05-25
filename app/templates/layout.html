@@ -24,7 +24,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="user">
                 <!-- TODO: change to user's pic -->
-                <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture"> {{ user.name }} (<a href="{{ url_for('logout') }}">Sair</a>)
+                <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture"> {{ current_user.username }} (<a href="{{ url_for('logout') }}">Sair</a>)
             </li>
           </ul>
         </div>

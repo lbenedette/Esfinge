@@ -1,35 +1,59 @@
 {% extends 'layout.html' %}
 {% block content %}
-  <div class="timeline-header">
-    <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture">
-    <div class="question-balloon"></div>
-    <form action="{{ url_for('timeline') }}" method="post">
-      <textarea name="question" class="question" placeholder="Pergunte qualquer coisa!"></textarea>
-      <p><input type="submit" name="submit" value="Perguntar" class="btn btn-default btn-sm"></p>
-    </form>
-    <div class="question-mark"></div>
-  </div>
-  <div class="timeline">
-    <div class="question-list">
-      {% for question in user.questions %}
-        <div class="question">
-          <div class="question-content">
-            {{ question.question }}
-          </div>
-          <div class="label label-danger">
-            <a href="{{ url_for('delete_question', question_id=question.id) }}">
-              x
-            </a>
-          </div>
+    {% if request.endpoint == 'user_timeline' %}
+        <p>Page of {{ user_profile.username }}</p>
+        {% if current_user.id == user_profile.id %}
+            <!-- pass -->
+        {% elif followed %}
+            <a href="{{ url_for('unfollow_user', profile_id=user_profile.id) }}">unfollow</a>
+        {% else %}
+            <a href="{{ url_for('follow_user', profile_id=user_profile.id) }}">follow</a>
+        {% endif %}
+        {% for question in user_profile.questions %}
+            <p>{{ question.question }}</p>
+            <form action="{{ url_for('add_answer', profile_id=user_profile.id, question_id=question.id) }}" method="post">
+                <textarea name="answer" id="" cols="50" rows="2"></textarea>
+                <input type="submit" value="Responder">
+            </form>
+            {% for answer in question.answers %}
+                <p>{{ answer.user_id }}: {{ answer.answer }}</p>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="timeline-header">
+            <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture">
+            <div class="question-balloon"></div>
+            <form action="{{ url_for('add_question') }}" method="post">
+                <textarea name="question" class="question" placeholder="Pergunte qualquer coisa!"></textarea>
+                <p><input type="submit" name="submit" value="Perguntar" class="btn btn-default btn-sm"></p>
+            </form>
+            <div class="question-mark"></div>
         </div>
-        <div class="answers">
-          {% for answer in question.answers %}
-            <p>{{ answer.answer }}</p>
-          {% endfor %}
+        <div class="timeline">
+            <div class="question-list">
+                {% for question in current_user.questions %}
+                    <div class="question">
+                        <div class="question-content">
+                            {{ question.question }}
+                        </div>
+                        <div class="label label-danger">
+                            <a href="{{ url_for('delete_question', question_id=question.id) }}">
+                                x
+                            </a>
+                        </div>
+                    </div>
+                    <div class="answers">
+                        {% for answer in question.answers %}
+                            <p>{{ answer.user_id }}: {{ answer.answer }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="follow-list">
+                {% for follow in current_user.follows %}
+                    <p>{{ follow.follow_email }}</p>
+                {% endfor %}
+            </div>
         </div>
-      {% endfor %}
-    </div>
-    <div class="follow-list"></div>
-  </div>
-
+    {% endif %}
 {% endblock %}
