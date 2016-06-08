@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ title }}</title>
+  {% if request.endpoint == 'user_timeline' %}
+    <title>{{ user_profile.username }}</title>
+  {% else %}
+    <title>{{ current_user.username }}</title>
+  {% endif %}
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
   <link href="{{ url_for('static', filename='css/timeline.css') }}" rel="stylesheet" type="text/css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}" width="14px" height="14px" alt="Esfinge" />
 </head>
 <body>
   <div class="container">
@@ -24,7 +29,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="user">
                 <!-- TODO: change to user's pic -->
-                <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture"> {{ user.username }} (<a href="{{ url_for('logout') }}">Sair</a>)
+                <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture"> {{ current_user.username }} (<a href="{{ url_for('logout') }}">Sair</a>)
             </li>
           </ul>
         </div>
