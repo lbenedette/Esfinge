@@ -2,38 +2,37 @@
 {% block content %}
     <div class="timeline-header">
         <img src="{{ url_for('static', filename='img/user.jpg') }}" class="user-picture">
-        <h1>
-            {{ profile.username }}
-            <!-- TODO: create a button to follow/unfollow -->
+        <div class="user-info">
+            <div class="username">{{ profile.username }}</div>
             {% if followed != None %}
                 {% if followed %}
-                    <a href="{{ url_for('unfollow_user', profile_id=profile.id) }}">Unfollow</a></h1>
+                    <a href="{{ url_for('unfollow_user', profile_id=profile.id) }}"><div class="btn btn-danger">Unfollow</div></a>
                 {% elif not followed %}
-                    <a href="{{ url_for('follow_user', profile_id=profile.id) }}">Follow</a>
+                    <a href="{{ url_for('follow_user', profile_id=profile.id) }}"><div class="btn btn-primary">Follow</div></a>
                 {% endif %}
             {% endif %}
-        </h1>
+            
+        </div>
     </div>
     <div class="timeline">
         <div class="question-list">
             {% for question in questions %}
                 <!-- TODO: I dont have sure about this <a></a> tag -->
-                <p><a href="{{ url_for('profile_page', profile_id=question.user.id) }}">{{ question.user.username }}</a>: {{ question.question }}</p>
-                {% if profile.id == current_user.id %}
-                    <div class="label label-danger">
-                        <a href="{{ url_for('delete_question', question_id=question.id) }}">
-                            x
-                        </a>
+                <div class="question">
+                    <div class="question-content">
+                        <a href="{{ url_for('profile_page', profile_id=question.user.id) }}">{{ question.user.username }}</a>: {{ question.question }}
                     </div>
-                {% endif %}
-                <form action="{{ url_for('add_answer', question_id=question.id) }}" method="post">
-                    <textarea name="answer" id="" cols="50" rows="2" required></textarea>
-                    <input type="submit" value="Responder">
-                </form>
+                    {% if profile.id == current_user.id %}
+                        <div class="label label-danger">
+                            <a href="{{ url_for('delete_question', question_id=question.id) }}">x</a>
+                        </div>
+                    {% endif %}
+                </div>
+                  
                 <div class="answers">
                     {% for answer in question.answers %}
-                        <p>
-                            <a href="{{ url_for('user_profile', profile_id=answer.user.id) }}">{{ answer.user.username }}</a>: {{ answer.answer }}
+                        <div class="answer">
+                            <a href="{{ url_for('profile_page', profile_id=answer.user.id) }}">{{ answer.user.username }}</a>: {{ answer.answer }}
                             {% if answer.user_id == current_user.id %}
                                 <div class="label label-danger">
                                     <a href="{{ url_for('delete_answer', answer_id=answer.id) }}">
@@ -41,14 +40,27 @@
                                     </a>
                                 </div>
                             {% endif %}
-                        </p>
+                        </div>
                     {% endfor %}
-                </div>
+                    <form class="input-group input-group-sm" action="{{ url_for('add_answer', question_id=question.id) }}" method="post">
+                        <input type="text" name="answer" class="form-control" placeholder="Sua resposta">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Responder</button>
+                        </span>
+                    </form>
+              </div>
             {% endfor %}
         </div>
-        <div class="follow-list">
+        <div class="list-group follow-list">
+            <span class="list-group-item list-group-item-warning">
+                {% if request.path == url_for('profile_page', profile_id=current_user.id) %}
+                    Você segue
+                {% else %}
+                    {{ profile.username }} segue
+                {% endif %}
+            </span>
             {% for follow in profile.follows %}
-                <p><a href="{{ url_for('profile_page', profile_id=follow.follow.id) }}">{{ follow.follow.username }}</a></p>
+                <a class="list-group-item" href="{{ url_for('profile_page', profile_id=follow.follow.id) }}">{{ follow.follow.username }}</a>
             {% endfor %}
         </div>
     </div>

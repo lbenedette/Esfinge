@@ -130,6 +130,15 @@ body {
   height: 120px;
 }
 
+.timeline-header .user-info {
+    margin-left: 15px;
+}
+
+.timeline-header .user-info .username {
+    font-size: 52px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, .5);
+}
+
 .timeline {
   display: flex;
 }
@@ -177,28 +186,41 @@ body {
   width: 100%;
 }
 
-.timeline .question-list .question .label a {
+.timeline .question-list .label-danger a {
   color: #f4eded;
 }
 
-.timeline .question-list .question .label a:hover {
+.timeline .question-list .label a:hover {
   text-decoration: none;
   color: #fff;
+}
+
+.timeline .question-list .label-danger {
+  margin-left: 10px;
+  height: 17px;
 }
 
 .timeline .question-list .answers {
   background: rgba(215, 183, 159, .5);
   margin-right: 20px;
-  padding: 5px 10px 5px 30px;
+  padding: 10px 15px 15px 30px;
   display: none;
   border-radius: 0 0 5px 5px;
+  font-size: 12px;
+}
+
+.timeline .question-list .answers .answer {
+  display: flex;
+  margin: 0 5px 10px 0;
+}
+
+.timeline .question-list .answers .answer .label-danger a {
   font-size: 12px;
 }
 
 .timeline .follow-list {
   margin-top: 15px;
   width: 30%;
-  background: rgba(0,0,0,.1);
 }
 
 .alert {

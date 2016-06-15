@@ -21,9 +21,8 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <!-- TODO: active only if current page -->
-            <li class="active"><a href="{{ url_for('profile_page', profile_id=current_user.id) }}">Sua Página</a></li>
-            <!-- TODO: implement actual search field -->
+            <li {% if request.path == url_for('timeline') %} class="active" {% endif %}><a href="{{ url_for('timeline') }}">Linha do Tempo</a></li>
+            <li {% if request.path == url_for('profile_page', profile_id=current_user.id) %} class="active" {% endif %}><a href="{{ url_for('profile_page', profile_id=current_user.id) }}">Sua Página</a></li>
             <li><a href="#">[Buscar]</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

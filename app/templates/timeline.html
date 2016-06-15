@@ -14,16 +14,12 @@
             {% for question in questions %}
                 <div class="question">
                     <div class="question-content">
-                        <p><a href="{{ url_for('profile_page', profile_id=question.user.id) }}">{{ question.user.username }}</a>: {{ question.question }}</p>
-                        <form action="{{ url_for('add_answer', question_id=question.id) }}" method="post">
-                            <textarea name="answer" id="" cols="50" rows="2" required></textarea>
-                            <input type="submit" value="Responder">
-                        </form>
+                        <a href="{{ url_for('profile_page', profile_id=question.user.id) }}">{{ question.user.username }}</a>: {{ question.question }}
                     </div>
                 </div>
                 <div class="answers">
                     {% for answer in question.answers %}
-                        <p>
+                        <div class="answer">
                             <a href="{{ url_for('profile_page', profile_id=answer.user.id) }}">{{ answer.user.username }}</a>: {{ answer.answer }}
                             {% if answer.user_id == current_user.id %}
                                 <div class="label label-danger">
@@ -32,10 +28,17 @@
                                     </a>
                                 </div>
                             {% endif %}
-                        </p>
+                        </div>
                     {% endfor %}
+                    <form class="input-group input-group-sm" action="{{ url_for('add_answer', question_id=question.id) }}" method="post">
+                        <input type="text" name="answer" class="form-control" placeholder="Sua resposta">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Responder</button>
+                        </span>
+                    </form>
                 </div>
             {% endfor %}
         </div>
+        <!-- TODO: List of followers in timeline -->
     </div>
 {% endblock %}
