@@ -1,4 +1,5 @@
 from app import db
+import datetime
 
 
 class User(db.Model):
@@ -6,12 +7,10 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(25), unique=True)
-    encrypt_password = db.Column(db.String(20))
     username = db.Column(db.String(25))
+    password = db.Column(db.String(25))
     authenticated = db.Column(db.Boolean, default=False)
-    questions = db.relationship('Question', backref='user', lazy='dynamic')
-    answers = db.relationship('Answer', backref='user', lazy='dynamic')
-    follows = db.relationship('Follow', backref='user', lazy='dynamic')
+    follows = db.relationship('Follow', foreign_keys='Follow.follower_id')
 
     def is_active(self):
         """True, as all users are active."""
@@ -33,17 +32,23 @@ class User(db.Model):
 class Follow(db.Model):
     __tablename__ = 'follow'
 
-    # inside of system you can follow yourself
-    follow_email = db.Column(db.String(50), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    follow_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    follow = db.relationship('User', foreign_keys=[follow_id])
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    follower = db.relationship('User', foreign_keys=[follower_id])
 
 
+# TODO: search a way to have relationship in two tables
+# add question.user.username
 class Question(db.Model):
     __tablename__ = 'question'
 
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Text)
+    posttime = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='question')
     answers = db.relationship('Answer', backref='question', lazy='dynamic')
 
 
@@ -53,4 +58,6 @@ class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     answer = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref='answer')
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+

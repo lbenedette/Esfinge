@@ -21,6 +21,3 @@ def not_found(error):
 
 
 from app import controllers
-
-
-db.create_all()

@@ -22,7 +22,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <!-- TODO: active only if current page -->
-            <li class="active"><a href="{{ url_for('timeline') }}">Sua Página</a></li>
+            <li class="active"><a href="{{ url_for('profile_page', profile_id=current_user.id) }}">Sua Página</a></li>
             <!-- TODO: implement actual search field -->
             <li><a href="#">[Buscar]</a></li>
           </ul>
