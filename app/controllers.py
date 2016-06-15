@@ -22,13 +22,6 @@ def database_delete(data):
 def user_loader(user_id):
     return User.query.get(user_id)
 
-
-# controllers
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
 # change flash message to error message?
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -82,7 +75,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/timeline', methods=['GET'])
+@app.route('/', methods=['GET'])
 @login_required
 def timeline():
     user = current_user
