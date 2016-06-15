@@ -40,13 +40,5 @@
             {% endfor %}
         </div>
         <!-- TODO: List of followers in timeline -->
-        <!--<div class="list-group follow-list">
-            <span class="list-group-item list-group-item-warning">
-                Você segue
-            </span>
-            {% for follow in profile.follows %}
-                <a class="list-group-item" href="{{ url_for('profile_page', profile_id=follow.follow.id) }}">{{ follow.follow.username }}</a>
-            {% endfor %}
-        </div>-->
     </div>
 {% endblock %}
