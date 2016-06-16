@@ -43,7 +43,7 @@
             <span class="list-group-item list-group-item-warning">
                 Você segue
             </span>
-            {% for follow in current_user.follows %}
+            {% for follow in user.follows %}
                 <a class="list-group-item" href="{{ url_for('profile_page', profile_id=follow.follow.id) }}">{{ follow.follow.username }}</a>
             {% endfor %}
         </div>
