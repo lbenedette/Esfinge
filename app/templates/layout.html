@@ -23,7 +23,7 @@
           <ul class="nav navbar-nav">
             <li {% if request.path == url_for('timeline') %} class="active" {% endif %}><a href="{{ url_for('timeline') }}">Linha do Tempo</a></li>
             <li {% if request.path == url_for('profile_page', profile_id=current_user.id) %} class="active" {% endif %}><a href="{{ url_for('profile_page', profile_id=current_user.id) }}">Sua Página</a></li>
-            <li><a href="#">[Buscar]</a></li>
+            <!--<li><a href="#">[Buscar]</a></li>-->
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="user">
