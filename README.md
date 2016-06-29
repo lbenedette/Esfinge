@@ -1,13 +1,12 @@
 # Esfinge
 
 ## Requisitos
-* Python 3.5+
-* Flask
-* Flask-Login
-* Flask-SQLAlchemy
-* bcrypt
-* Kivy-Garden
-* SQLAlchemy
+* Python                3.5.1
+* Flask                 0.11.1
+* Flask-Login           0.3.2
+* Flask-SQLAlchemy      2.1
+* sqlalchemy-migrate    0.10.0
+* bcrypt                2.0.0
 
 ## Como utilizar
 1. Rode o programa utilizando o comando `python Esfinge.py`. Se você possuir mais de uma versão do Python instalada, pode ser necessário mudar o comando, por exemplo, para `python3 Esfinge.py`.
