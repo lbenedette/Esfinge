@@ -22,6 +22,7 @@ def database_delete(data):
 def user_loader(user_id):
     return User.query.get(user_id)
 
+
 # change flash message to error message?
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -87,7 +88,7 @@ def timeline():
         questions = Question.query.filter(or_(Question.user_id == f.follow_id for f in user.follows)).all()
     else:
         questions = []
-    return render_template('timeline.html', questions=questions)
+    return render_template('timeline.html', user=user, questions=questions)
 
 @app.route('/profile/<int:profile_id>')
 @login_required
