@@ -1,4 +1,5 @@
 # Esfinge
+![Esfinge](screenshot.png)
 
 ## Requisitos
 * Python                3.5.1
